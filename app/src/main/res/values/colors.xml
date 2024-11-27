@@ -10,4 +10,7 @@
 
     <color name="primary">#0f1418</color>
     <color name="splashtext">#585e67</color>
+    <color name="search_bar_color">#19202a</color>
+    <color name="grey">#6d7279</color>
+    <color name="line">#14354f</color>
 </resources>
