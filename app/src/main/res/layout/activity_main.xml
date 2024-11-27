@@ -246,6 +246,123 @@
         android:layout_marginBottom="25dp"
         android:layout_marginRight="15dp"/>
 
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/add"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:orientation="horizontal"
+            android:background="@drawable/buttons_rounded">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Image"
+                android:textColor="@color/text"
+                android:textSize="18sp"
+                android:layout_marginEnd="10dp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/image"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/buttons_rounded">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Drawing"
+                android:textColor="@color/text"
+                android:textSize="18sp"
+                android:layout_marginEnd="10dp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:id="@+id/drawing"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/paintbrush"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/buttons_rounded">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="List"
+                android:textColor="@color/text"
+                android:textSize="18sp"
+                android:layout_marginEnd="10dp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:id="@+id/list"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/list"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/buttons_rounded">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Text"
+                android:textColor="@color/text"
+                android:textSize="18sp"
+                android:layout_marginEnd="10dp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:id="@+id/text"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/text"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
     <ImageView
         android:id="@+id/blurOverlay"
         android:layout_width="match_parent"
