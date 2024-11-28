@@ -4,10 +4,11 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import com.example.l215404.googlekeep.Database.models.Reminder;
 import com.example.l215404.googlekeep.Database.models.User;
 
 @Dao
-public interface Reminder {
+public interface ReminderDao {
     @Insert
     void insertReminder(Reminder reminder);
 
