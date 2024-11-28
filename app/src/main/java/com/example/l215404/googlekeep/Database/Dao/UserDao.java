@@ -25,4 +25,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE userId = :userId")
     User getUserByID(int userId);
+
+    @Query("SELECT * FROM users WHERE email = :email")
+    User checkIFEmailExists(String email);
 }

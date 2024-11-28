@@ -11,12 +11,14 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private String profilepic;
     private long createdAt;
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password, String profilepic) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.profilepic = profilepic;
         this.createdAt = System.currentTimeMillis();
     }
 
@@ -58,5 +60,13 @@ public class User {
 
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getProfilepic() {
+        return profilepic;
+    }
+
+    public void setProfilepic(String profilepic) {
+        this.profilepic = profilepic;
     }
 }
