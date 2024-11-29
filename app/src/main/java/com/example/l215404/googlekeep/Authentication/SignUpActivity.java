@@ -65,11 +65,18 @@ public class SignUpActivity extends AppCompatActivity {
 
         database = GoogleKeepDatabase.getInstance(this);
 
+        sessionManager = new SessionManager(this);
+
+        if(sessionManager.isLoggedIn()) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+
         nextButton.setEnabled(false);
         nextButton.setAlpha(0.5f);
 
         nameTextView.addTextChangedListener(signUpTextWatcher);
-        emailTextView.addTextChangedListener(signUpTextwatcher);
+        emailTextView.addTextChangedListener(signUpTextWatcher);
         passwordTextView.addTextChangedListener(signUpTextWatcher);
 
         profileImageplaceholder.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +90,14 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signUp();
+            }
+        });
+
+        loginTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
+                startActivity(i);
             }
         });
 
@@ -178,10 +193,17 @@ public class SignUpActivity extends AppCompatActivity {
         User user = new User(name, email, password, selectedImagePath);
         Log.d("SignUp", "Attepting sign up ...");
         Log.d("SignUp", "name: "+ name + "Email: "+email);
-        new InsertUserTask().execute(user);
+        new InsertUserTask(sessionManager).execute(user);
     }
 
     private class InsertUserTask extends AsyncTask<User, Void, String> {
+
+        private SessionManager sessionManager;
+
+        public InsertUserTask(SessionManager sessionManager) {
+            this.sessionManager = sessionManager;
+        }
+
         @Override
         protected String doInBackground(User... users) {
             User user = users[0];
@@ -191,6 +213,11 @@ public class SignUpActivity extends AppCompatActivity {
                 return "Email already registered";
             } else {
                 database.userDao().insertUser(user);
+                Log.d("SignUp", "User to signup: " + user.getUserId() + " " + user.getEmail());
+                sessionManager.createSession(user.getUserId(), user.getEmail());
+                if (sessionManager.getEmail() != null ) {
+                    Toast.makeText(SignUpActivity.this, "Session Created successfully", Toast.LENGTH_SHORT).show();
+                }
                 return "Account created successfully!";
             }
         }
