@@ -6,8 +6,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private GoogleKeepDatabase database;
     SessionManager sessionManager;
+    private TextView signupTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,17 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.email_input);
         passwordEditText = findViewById(R.id.password_input);
         loginButton = findViewById(R.id.next_button);
+
+        signupTextView = findViewById(R.id.login_account);
+
+        signupTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         loginButton.setEnabled(false);
         loginButton.setAlpha(0.5f);

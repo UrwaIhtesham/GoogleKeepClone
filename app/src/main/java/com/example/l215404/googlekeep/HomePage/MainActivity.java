@@ -41,6 +41,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.l215404.googlekeep.Authentication.SignUpActivity;
 import com.example.l215404.googlekeep.Database.GoogleKeepDatabase;
 import com.example.l215404.googlekeep.Database.models.User;
+import com.example.l215404.googlekeep.Editing.TextActivity;
 import com.example.l215404.googlekeep.R;
 import com.example.l215404.googlekeep.SessionManager.SessionManager;
 import com.google.android.material.navigation.NavigationView;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView profileImageView, hamburgerMenu, viewAgendaImageView, profileImage;
     private ImageView addButton;
     private LinearLayout buttonContainer, profileContainer;
+    private LinearLayout textLinearLayout;
     private GoogleKeepDatabase database;
 
     private Button logoutButton;
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonContainer = findViewById(R.id.buttonContainer);
         profileContainer = findViewById(R.id.profilelayout);
+        textLinearLayout = findViewById(R.id.textLayout);
 
         navigationView = findViewById(R.id.navigationDrawer);
 
@@ -193,6 +196,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 blurOverlay.setVisibility(View.GONE);
                 profileContainer.setVisibility(View.GONE);
+            }
+        });
+
+        textLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, TextActivity.class);
+                startActivity(i);
+                finish();
             }
         });
 

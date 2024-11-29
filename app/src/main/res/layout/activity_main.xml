@@ -249,6 +249,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/textLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="15dp"
@@ -318,11 +319,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="16dp">
+            android:paddingTop="16dp"
+            android:layout_marginBottom="16dp">
             <ImageView
                 android:id="@+id/cross"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:layout_marginStart="10dp"
                 android:src="@drawable/cross"/>
             <TextView
                 android:id="@+id/Google"
