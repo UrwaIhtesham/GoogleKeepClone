@@ -315,7 +315,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Choose a date & time"
+                android:text="Choose a date &amp; time"
                 android:textColor="@color/text"
                 android:textSize="20sp"/>
 

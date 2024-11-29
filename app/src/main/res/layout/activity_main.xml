@@ -8,24 +8,32 @@
     tools:context=".HomePage.MainActivity"
     android:background="@color/primary">
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="16dp"
         android:background="@drawable/search_bar_rounded"
-        android:orientation="horizontal"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:weightSum="1"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
+        android:weightSum="1">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -47,13 +55,13 @@
                 android:layout_height="48dp"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
+                android:autofillHints="name"
                 android:background="@android:color/transparent"
                 android:hint="Search your notes"
+                android:inputType="text"
                 android:textColor="#c2c6cf"
                 android:textColorHint="#c2c6cf"
-                android:textSize="17sp"
-                android:inputType="text"
-                android:autofillHints="name"/>
+                android:textSize="17sp" />
         </LinearLayout>
 
         <!-- Right side: Agenda and Launcher Background icons -->
@@ -68,15 +76,15 @@
                 android:id="@+id/viewagenda"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/view_agenda"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/view_agenda" />
 
             <ImageView
                 android:id="@+id/profilepic"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/ic_launcher_background"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_launcher_background" />
         </LinearLayout>
     </LinearLayout>
 
@@ -100,61 +108,14 @@
             android:fontFamily="sans-serif"
             android:layout_marginLeft="16dp"/>
 
-        <GridLayout
-            android:id="@+id/pinned_grid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-
-        <!-- Card 1 in the grid (Column 1, Row 1) -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="195dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="5dp"
-            android:layout_row="0"
-            android:layout_column="0"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            android:background="@drawable/cardview">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Card 1"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-        </androidx.cardview.widget.CardView>
-
-        <!-- Card 2 in the grid (Column 2, Row 1) -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="195dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="5dp"
-            android:layout_row="0"
-            android:layout_column="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            android:background="@drawable/cardview">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Card 2"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-        </androidx.cardview.widget.CardView>
-
-    </GridLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pinnedRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:paddingBottom="70dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"/>
 
     </LinearLayout>
 
@@ -178,61 +139,14 @@
             android:fontFamily="sans-serif"
             android:layout_marginLeft="16dp"/>
 
-        <GridLayout
-            android:id="@+id/others_grid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-
-            <!-- Card 1 in the grid (Column 1, Row 1) -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="195dp"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="1"
-                android:layout_rowSpan="1"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="5dp"
-                android:layout_row="0"
-                android:layout_column="0"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp"
-                android:background="@drawable/cardview">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Card 1"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp" />
-            </androidx.cardview.widget.CardView>
-
-            <!-- Card 2 in the grid (Column 2, Row 1) -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="195dp"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="1"
-                android:layout_rowSpan="1"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="5dp"
-                android:layout_row="0"
-                android:layout_column="1"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp"
-                android:background="@drawable/cardview">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Card 2"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp" />
-            </androidx.cardview.widget.CardView>
-
-        </GridLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/OthersRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:paddingBottom="70dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"/>
 
     </LinearLayout>
 
@@ -398,14 +312,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/search_bar_rounded"
         android:visibility="gone">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="16dp">
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:id="@+id/cross"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:src="@drawable/cross"/>
             <TextView
                 android:id="@+id/Google"
@@ -445,7 +362,7 @@
                     android:textColor="@color/grey"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="5dp"/>
+                    android:layout_marginBottom="3dp"/>
                 <TextView
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
@@ -468,7 +385,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -484,6 +402,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/grey"
                 android:textSize="30sp"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="14dp"/>
             <TextView
                 android:layout_width="wrap_content"

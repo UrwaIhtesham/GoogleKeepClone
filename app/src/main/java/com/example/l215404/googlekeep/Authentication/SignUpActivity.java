@@ -215,9 +215,6 @@ public class SignUpActivity extends AppCompatActivity {
                 database.userDao().insertUser(user);
                 Log.d("SignUp", "User to signup: " + user.getUserId() + " " + user.getEmail());
                 sessionManager.createSession(user.getUserId(), user.getEmail());
-                if (sessionManager.getEmail() != null ) {
-                    Toast.makeText(SignUpActivity.this, "Session Created successfully", Toast.LENGTH_SHORT).show();
-                }
                 return "Account created successfully!";
             }
         }
@@ -226,6 +223,9 @@ public class SignUpActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             Toast.makeText(SignUpActivity.this, s, Toast.LENGTH_SHORT).show();
             if (s.equals("Account created successfully!")) {
+                if (sessionManager.getEmail() != null ) {
+                    Toast.makeText(SignUpActivity.this, "Session Created successfully", Toast.LENGTH_SHORT).show();
+                }
                 Intent i =new Intent(SignUpActivity.this, MainActivity.class);
                 startActivity(i);
                 finish();

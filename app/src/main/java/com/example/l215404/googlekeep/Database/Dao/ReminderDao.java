@@ -13,8 +13,8 @@ public interface ReminderDao {
     void insertReminder(Reminder reminder);
 
     @Query("SELECT * FROM reminders WHERE reminderId = :reminderId")
-    User getReminderByID(int reminderId);
+    Reminder getReminderByID(int reminderId);
 
     @Query("SELECT * FROM reminders WHERE noteId = :noteId")
-    User getReminderByNoteID(int noteId);
+    Reminder getReminderByNoteID(int noteId);
 }
