@@ -7,18 +7,16 @@ public class Note {
     private Boolean isArchived;
     private Boolean isPinned;
     private Boolean isDeleted;
-    private int labelId;
     private long createdAt;
     private long updatedAt;
 
-    public Note(int id, String Title, String content, Boolean isArchived, Boolean isPinned, Boolean isDeleted, int labelId, Long createdAt, Long updatedAt) {
+    public Note(int id, String Title, String content, Boolean isArchived, Boolean isPinned, Boolean isDeleted, Long createdAt, Long updatedAt) {
         this.Id = id;
         this.Title = Title;
         this.content = content;
         this.isArchived = isArchived;
         this.isPinned = isPinned;
         this.isDeleted = isDeleted;
-        this.labelId = labelId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -61,14 +59,6 @@ public class Note {
 
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
-    }
-
-    public int getLabelId() {
-        return labelId;
-    }
-
-    public void setLabelId(int labelId) {
-        this.labelId = labelId;
     }
 
     public long getCreatedAt() {

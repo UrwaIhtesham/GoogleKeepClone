@@ -25,9 +25,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         this.pageType = pageType;
     }
 
+    public interface onNoteClickListener {
+        void onNoteClick(Note note);
+    }
+
     @NonNull
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d("NoteAdapter", "onCreateViewHolder: Helooooo");
         View view = LayoutInflater.from(context).inflate(R.layout.note_list, parent, false);
         return new NoteViewHolder(view);
     }
@@ -35,14 +40,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note = noteList.get(position);
-
-        Log.d("NoteAdapter", "Note: " + holder.title + " " + holder.content);
+        Log.d("NoteAdapter", "Note: " + position);
+        Log.d("NoteAdapter", "Note: " + note.getTitle() + " " + note.getContent());
         holder.title.setText(note.getTitle());
         holder.content.setText(note.getContent());
     }
 
     @Override
     public int getItemCount() {
+        Log.d("NoteAdapter", "getItemCount: "+noteList.size());
         return noteList.size();
     }
 

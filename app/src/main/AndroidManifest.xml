@@ -16,6 +16,9 @@
         android:theme="@style/Theme.GoogleKeep"
         tools:targetApi="31">
         <activity
+            android:name=".HelpFeedback.HelpFeedbackActivity"
+            android:exported="false" />
+        <activity
             android:name=".Settings.SettingsActivity"
             android:exported="false" />
         <activity

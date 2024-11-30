@@ -114,15 +114,18 @@ public class MainActivity extends AppCompatActivity {
         pinnedRecyclerView = findViewById(R.id.pinnedRecyclerView);
         pinnedRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        OthersRecyclerView = findViewById(R.id.OthersRecyclerView);
-        OthersRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+//        OthersRecyclerView = findViewById(R.id.OthersRecyclerView);
+//        OthersRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         loadProfileImage();
 
         if (sessionManager.isLoggedIn()) {
-            new MainActivity.FetchNotesTask().execute();
+            new FetchNotesTask().execute();
         }
 
+//        NoteAdapter adapter = new NoteAdapter(note_List, this, "Page2");
+//        OthersRecyclerView.setAdapter(adapter);
+        Log.d("MainActivity", "onCreate: " + note_List);
         noteAdapter = new NoteAdapter(note_List, this, "Page1");
         pinnedRecyclerView.setAdapter(noteAdapter);
 
@@ -219,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 
     private class FetchUserDetailsTask extends AsyncTask<Void, Void, User> {
@@ -254,14 +258,16 @@ public class MainActivity extends AppCompatActivity {
             List<Note> notesFinal = new ArrayList<>();
 
             for (com.example.l215404.googlekeep.Database.models.Note dbnote : dbNotes) {
+                String noteContent = dbnote.getContent();
+                String plainTextContent = removeHtmlTags(noteContent);
+
                 Note adapterNote = new Note(
                         dbnote.getNoteId(),
                         dbnote.getTitle(),
-                        dbnote.getContent(),
+                        plainTextContent,
                         dbnote.isArchived(),
                         dbnote.isPinned(),
                         dbnote.isDeleted(),
-                        dbnote.getLabelId(),
                         dbnote.getCreatedAt(),
                         dbnote.getUpdatedAt()
                 );
@@ -269,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
                 notesFinal.add(adapterNote);
                 Log.d("MainActivity", "Notes: " + notesFinal);
             }
+
+
             return notesFinal;
         }
 
@@ -282,7 +290,22 @@ public class MainActivity extends AppCompatActivity {
             note_List.clear();
             note_List.addAll(noteList);
             Log.d("MainActivity", "onPoseExecute: " + noteList);
-            noteAdapter.notifyDataSetChanged();
+            Log.d("MainActivity", "onPoseExecute: " + note_List.size());
+            if (noteAdapter == null) {
+                pinnedRecyclerView = findViewById(R.id.pinnedRecyclerView);
+                noteAdapter = new NoteAdapter(note_List, MainActivity.this, "Page1");
+                pinnedRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                pinnedRecyclerView.setAdapter(noteAdapter);
+            } else {
+                noteAdapter.notifyDataSetChanged();
+            }
+        }
+
+        private String removeHtmlTags(String content) {
+            if (content == null) {
+                return "";
+            }
+            return content.replaceAll("<[^>]*>", "");
         }
     }
 

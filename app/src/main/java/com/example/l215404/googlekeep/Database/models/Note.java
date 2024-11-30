@@ -11,13 +11,6 @@ import androidx.room.PrimaryKey;
                         parentColumns = "userId",
                         childColumns = "userId",
                         onDelete = ForeignKey.CASCADE
-                ),
-                @ForeignKey(
-                        entity = Label.class,
-                        parentColumns = "labelId",
-                        childColumns = "labelId",
-                        onDelete = ForeignKey.CASCADE
-
                 )
 })
 public class Note {
@@ -25,7 +18,6 @@ public class Note {
     private int noteId;
 
     private int userId;
-    private int labelId;
     private String title;
     private String content;
     private boolean isArchived;
@@ -34,15 +26,15 @@ public class Note {
     private long createdAt;
     private long updatedAt;
 
-    public Note(int userId, int labelId, String title, String content) {
+    public Note(int userId, String title, String content) {
         this.userId = userId;
-        this.labelId = labelId;
         this.title = title;
         this.content = content;
         this.isArchived = false;
         this.isPinned = false;
         this.isDeleted = false;
         this.createdAt = System.currentTimeMillis();
+        this.updatedAt = createdAt;
     }
 
     public int getNoteId() {
@@ -59,14 +51,6 @@ public class Note {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public int getLabelId() {
-        return labelId;
-    }
-
-    public void setLabelId(int labelId) {
-        this.labelId = labelId;
     }
 
     public String getTitle() {
