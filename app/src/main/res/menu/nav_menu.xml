@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Header Section (Google Keep) -->
+    <group
+        android:id="@+id/googlekeep_group">
+        <item
+            android:id="@+id/googlekeep"
+            android:title="Google Keep"
+            android:titleCondensed="Keep"
+            android:checkable="false"
+            android:enabled="false" />
+    </group>
+
+    <!-- Notes Section -->
+    <item
+        android:id="@+id/noteslayout"
+        android:icon="@drawable/notes"
+        android:title="Notes"
+        android:checkable="false"/>
+
+    <!-- Reminders Section -->
+    <item
+        android:id="@+id/reminderslayout"
+        android:icon="@drawable/reminders"
+        android:title="Reminders"
+        android:checkable="false"/>
+
+    <!-- Divider -->
+    <item
+        android:title="|"
+        android:icon="@android:color/transparent"
+        android:checkable="false"
+        android:enabled="false" />
+
+    <!-- Labels Section -->
+    <item
+        android:id="@+id/labelslayout"
+        android:icon="@drawable/label"
+        android:title="Labels"
+        android:checkable="false"/>
+
+    <!-- Create New Label Section -->
+    <item
+        android:id="@+id/newlayout"
+        android:icon="@drawable/createnewlabel"
+        android:title="Create New label"
+        android:checkable="false"/>
+
+    <!-- Divider -->
+    <item
+        android:title="|"
+        android:icon="@android:color/transparent"
+        android:checkable="false"
+        android:enabled="false" />
+
+    <!-- Archive Section -->
+    <item
+        android:id="@+id/archivelayout"
+        android:icon="@drawable/archive"
+        android:title="Archive"
+        android:checkable="false"/>
+
+    <!-- Deleted Section -->
+    <item
+        android:id="@+id/deletedlayout"
+        android:icon="@drawable/deleted"
+        android:title="Deleted"
+        android:checkable="false"/>
+
+    <!-- Settings Section -->
+    <item
+        android:id="@+id/settingslayout"
+        android:icon="@drawable/settings"
+        android:title="Settings"
+        android:checkable="false"/>
+
+    <!-- Help & Feedback Section -->
+    <item
+        android:id="@+id/helplayout"
+        android:icon="@drawable/helpandfeedback"
+        android:title="Help &amp; Feedback"
+        android:checkable="false"/>
+
+</menu>

@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isAddButtonClicked;
 
+    private LinearLayout notesLayout, remindersLayout, archiveLayout, deletedLayout, settingsLayout, helpLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,21 +172,28 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                //resetItemBackgrounds();
+
                 int noteId = item.getItemId();
 
                 if (noteId == R.id.noteslayout) {
-                    //do nothing
+                    //findViewById(noteId).setBackgroundResource(R.drawable.navigation_rounded_backgeround);
                 } else if (noteId == R.id.reminderslayout) {
-
+                    //findViewById(noteId).setBackgroundResource(R.drawable.navigation_rounded_backgeround);
                 } else if (noteId == R.id.archivelayout) {
+                    //findViewById(noteId).setBackgroundResource(R.drawable.navigation_rounded_backgeround);
 
                 } else if (noteId == R.id.deletedlayout) {
+                    //findViewById(noteId).setBackgroundResource(R.drawable.navigation_rounded_backgeround);
 
                 } else if (noteId == R.id.settingslayout) {
+                    //findViewById(noteId).setBackgroundResource(R.drawable.navigation_rounded_backgeround);
                     Intent i = new Intent(MainActivity.this, SettingsActivity.class);
                     startActivity(i);
                     finish();
                 } else if (noteId == R.id.helplayout) {
+                    //findViewById(noteId).setBackgroundResource(R.drawable.navigation_rounded_backgeround);
                     Intent i = new Intent(MainActivity.this, HelpFeedbackActivity.class);
                     startActivity(i);
                     finish();
@@ -230,6 +240,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        View headerView= navigationView.getHeaderView(0);
+
+        notesLayout = headerView.findViewById(R.id.noteslayout);
+        remindersLayout = headerView.findViewById(R.id.reminderslayout);
+        archiveLayout = headerView.findViewById(R.id.archivelayout);
+        deletedLayout = headerView.findViewById(R.id.deletedlayout);
+        settingsLayout = headerView.findViewById(R.id.settingslayout);
+        helpLayout = headerView.findViewById(R.id.helplayout);
+
+        settingsLayout.setOnClickListener(v -> {
+            // Handle navigation for Notes
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            finish();
+        });
+
+        helpLayout.setOnClickListener(v -> {
+            // Handle navigation for Notes
+            startActivity(new Intent(MainActivity.this, HelpFeedbackActivity.class));
+            finish();
+        });
+
+
+    }
+
+    private void resetItemBackgrounds() {
+        findViewById(R.id.noteslayout).setBackgroundResource(0); // Reset to no background
+        findViewById(R.id.reminderslayout).setBackgroundResource(0); // Reset to no background
+        findViewById(R.id.labelslayout).setBackgroundResource(0); // Reset to no background
+        findViewById(R.id.archivelayout).setBackgroundResource(0);// Reset to no background
+        findViewById(R.id.deletedlayout).setBackgroundResource(0); // Reset to no background
+        findViewById(R.id.settingslayout).setBackgroundResource(0); // Reset to no background
+        findViewById(R.id.helplayout).setBackgroundResource(0); // Reset to no background
     }
 
     private class FetchUserDetailsTask extends AsyncTask<Void, Void, User> {
