@@ -1,5 +1,6 @@
 package com.example.l215404.googlekeep.Editing;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.AsyncTask;
@@ -61,12 +62,70 @@ public class TextActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
+        Intent intent = getIntent();
+        if (intent != null){
+            int noteId = intent.getIntExtra("noteId", -1);
+            String noteTitle = intent.getStringExtra("noteTitle");
+            String noteContent = intent.getStringExtra("noteContent");
+
+            new FetchNoteTask(noteId).execute();
+
+        }
+
         if (sessionManager.isLoggedIn()) {
             int userId = sessionManager.getUserId();
             Log.d("TextActivity", "User id: " + userId);
         }
 
         saveButton.setOnClickListener(v -> saveNote());
+
+        pinImageView.setOnClickListener(v -> togglePinState());
+    }
+
+    private void togglePinState() {
+        String title = titleEditText.getText().toString();
+        String content = Html.toHtml(contentEdittext.getText());
+
+        if (title.isEmpty() || content.isEmpty()) {
+            Toast.makeText(TextActivity.this, "Please save the note first.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new togglePinTask(title, content).execute();
+    }
+
+    private class togglePinTask extends AsyncTask<Void, Void,Note> {
+        private int noteId;
+        private String title, content;
+
+        public togglePinTask(String title, String content) {
+            this.title = title;
+            this.content = content;
+        }
+
+        @Override
+        protected Note doInBackground(Void... voids) {
+            Note note = database.noteDao().getNoteByTitleContent(title, content);
+            if(note!=null) {
+                note.setPinned(!note.isPinned());
+                database.noteDao().update(note);
+            } return note;
+        }
+
+        @Override
+        protected void onPostExecute(Note note) {
+            if (note != null) {
+                if (note.isPinned()) {
+                    pinImageView.setImageResource(R.drawable.pin);
+                    Toast.makeText(TextActivity.this, "Pinned", Toast.LENGTH_SHORT).show();
+                } else {
+                    pinImageView.setImageResource(R.drawable.not_pin);
+                    Toast.makeText(TextActivity.this, "Unpinned", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(TextActivity.this, "Save the note first", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void saveNote() {
@@ -99,6 +158,43 @@ public class TextActivity extends AppCompatActivity {
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
             Toast.makeText(TextActivity.this, "Note saved", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class FetchNoteTask extends AsyncTask<Void, Void, Note> {
+        private int noteId;
+
+        public FetchNoteTask(int noteId) {
+            this.noteId = noteId;
+        }
+
+        @Override
+        protected Note doInBackground(Void... voids) {
+            Note note = database.noteDao().getNoteByID(noteId);
+            return note;
+        }
+
+        @Override
+        protected void onPostExecute(Note note) {
+            if (note != null) {
+                titleEditText.setText(note.getTitle());
+                String content = note.getContent();
+                String plainTextContent = removeHtmlTags(content);
+                contentEdittext.setText(plainTextContent);
+                boolean isPinned = note.isPinned();
+                if (isPinned == true) {
+                    pinImageView.setImageResource(R.drawable.pin);
+                } else {
+                    pinImageView.setImageResource(R.drawable.not_pin);
+                }
+            }
+        }
+
+        private String removeHtmlTags(String content) {
+            if (content == null) {
+                return "";
+            }
+            return content.replaceAll("<[^>]*>", "");
         }
     }
 }

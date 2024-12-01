@@ -42,8 +42,10 @@ import com.example.l215404.googlekeep.Authentication.SignUpActivity;
 import com.example.l215404.googlekeep.Database.GoogleKeepDatabase;
 import com.example.l215404.googlekeep.Database.models.User;
 import com.example.l215404.googlekeep.Editing.TextActivity;
+import com.example.l215404.googlekeep.HelpFeedback.HelpFeedbackActivity;
 import com.example.l215404.googlekeep.R;
 import com.example.l215404.googlekeep.SessionManager.SessionManager;
+import com.example.l215404.googlekeep.Settings.SettingsActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView pinnedRecyclerView, OthersRecyclerView;
     private NoteAdapter noteAdapter;
+    private NoteAdapter pinnedAdapter, otherAdapter;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
@@ -114,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
         pinnedRecyclerView = findViewById(R.id.pinnedRecyclerView);
         pinnedRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-//        OthersRecyclerView = findViewById(R.id.OthersRecyclerView);
-//        OthersRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        OthersRecyclerView = findViewById(R.id.OthersRecyclerView);
+        OthersRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         loadProfileImage();
 
@@ -125,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
 
 //        NoteAdapter adapter = new NoteAdapter(note_List, this, "Page2");
 //        OthersRecyclerView.setAdapter(adapter);
-        Log.d("MainActivity", "onCreate: " + note_List);
-        noteAdapter = new NoteAdapter(note_List, this, "Page1");
-        pinnedRecyclerView.setAdapter(noteAdapter);
+//        Log.d("MainActivity", "onCreate: " + note_List);
+//        noteAdapter = new NoteAdapter(note_List, this, "Page1");
+//        pinnedRecyclerView.setAdapter(noteAdapter);
 
         ImageView blurOverlay = findViewById(R.id.blurOverlay);
         blurOverlay.setOnClickListener(v -> {
@@ -177,9 +180,13 @@ public class MainActivity extends AppCompatActivity {
                 } else if (noteId == R.id.deletedlayout) {
 
                 } else if (noteId == R.id.settingslayout) {
-
+                    Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(i);
+                    finish();
                 } else if (noteId == R.id.helplayout) {
-
+                    Intent i = new Intent(MainActivity.this, HelpFeedbackActivity.class);
+                    startActivity(i);
+                    finish();
                 }
                 return true;
             }
@@ -283,23 +290,85 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Note> noteList) {
             super.onPostExecute(noteList);
-            Log.d("Main Activity", "Fetched Products: " + noteList.size());
+            Log.d("Main Activity", "Fetched Notes: " + noteList.size());
             if (noteList.isEmpty()) {
-                Log.d("MainActivity", "No products to display");
+                Log.d("MainActivity", "No notes to display");
             }
-            note_List.clear();
-            note_List.addAll(noteList);
-            Log.d("MainActivity", "onPoseExecute: " + noteList);
-            Log.d("MainActivity", "onPoseExecute: " + note_List.size());
-            if (noteAdapter == null) {
+
+            List<Note> pinnedNotes = new ArrayList<>();
+            List<Note> otherNotes = new ArrayList<>();
+
+            for(Note note: noteList) {
+                if (note.getPinned() == true && note.getArchived() == false && note.getDeleted() == false) {
+                    pinnedNotes.add(note);
+                } else if (note.getPinned() == false && note.getPinned() == false && note.getDeleted() == false) {
+                    otherNotes.add(note);
+                }
+            }
+
+            Log.d("Mainactivity", "Pinned Notes: " +pinnedNotes.size());
+            Log.d("MainActivity", "Other Notes: " + otherNotes.size());
+            for (Note note : otherNotes) {
+                Log.d("MainActivity", "Other Note: " + note.getTitle());
+            }
+
+            if (pinnedAdapter == null ){
                 pinnedRecyclerView = findViewById(R.id.pinnedRecyclerView);
-                noteAdapter = new NoteAdapter(note_List, MainActivity.this, "Page1");
+                pinnedAdapter = new NoteAdapter(pinnedNotes, MainActivity.this, note -> {
+                    Intent intent = new Intent(MainActivity.this, TextActivity.class);
+                    intent.putExtra("noteId", note.getId());
+                    intent.putExtra("noteTitle", note.getTitle());
+                    intent.putExtra("noteContent", note.getContent());
+                    startActivity(intent);
+                });
                 pinnedRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-                pinnedRecyclerView.setAdapter(noteAdapter);
+                pinnedRecyclerView.setAdapter(pinnedAdapter);
             } else {
-                noteAdapter.notifyDataSetChanged();
+                pinnedAdapter.notifyDataSetChanged();
             }
+
+            Log.d("MainActivity", "Other adapter: " + otherAdapter);
+
+            if (otherAdapter == null) {
+                OthersRecyclerView = findViewById(R.id.OthersRecyclerView);
+                Log.d("MainActivity", "Inside otheradapter if");
+                otherAdapter = new NoteAdapter(otherNotes, MainActivity.this, note -> {
+                    Intent i = new Intent(MainActivity.this, TextActivity.class);
+                    i.putExtra("noteId", note.getId());
+                    i.putExtra("noteTitle", note.getTitle());
+                    i.putExtra("noteContent", note.getContent());
+                    startActivity(i);
+                });
+                Log.d("MainActivity", "What is happening?");
+                OthersRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                OthersRecyclerView.setAdapter(otherAdapter);
+            } else {
+                Log.d("MainActivity", "Inside otheradapter else");
+                otherAdapter.notifyDataSetChanged();
+            }
+
+
+
+//            note_List.clear();
+//            note_List.addAll(noteList);
+//            Log.d("MainActivity", "onPoseExecute: " + noteList);
+//            Log.d("MainActivity", "onPoseExecute: " + note_List.size());
+//            if (noteAdapter == null) {
+//                pinnedRecyclerView = findViewById(R.id.pinnedRecyclerView);
+//                noteAdapter = new NoteAdapter(note_List, MainActivity.this, note -> {
+//                    Intent intent = new Intent(MainActivity.this, TextActivity.class);
+//                    intent.putExtra("noteId", note.getId());
+//                    intent.putExtra("noteTitle", note.getTitle());
+//                    intent.putExtra("noteContent", note.getContent());
+//                    startActivity(intent);
+//                });
+//                pinnedRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+//                pinnedRecyclerView.setAdapter(noteAdapter);
+//            } else {
+//                noteAdapter.notifyDataSetChanged();
+//            }
         }
+
 
         private String removeHtmlTags(String content) {
             if (content == null) {

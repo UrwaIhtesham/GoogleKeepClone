@@ -21,6 +21,14 @@ public class Note {
         this.updatedAt = updatedAt;
     }
 
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
+
     public String getTitle() {
         return Title;
     }

@@ -14,12 +14,12 @@ import com.example.l215404.googlekeep.R;
 
 import java.util.List;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
+public class OtherNoteAdapter extends RecyclerView.Adapter<OtherNoteAdapter.NoteViewHolder> {
     private List<Note> noteList;
     private Context context;
     private onNoteClickListener onNoteClickListener;
 
-    public NoteAdapter(List<Note> noteList, Context context, onNoteClickListener onNoteClickListener) {
+    public OtherNoteAdapter(List<Note> noteList, Context context, onNoteClickListener onNoteClickListener) {
         this.noteList = noteList;
         this.context = context;
         this.onNoteClickListener = onNoteClickListener;
@@ -32,7 +32,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @NonNull
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("NoteAdapter", "onCreateViewHolder: Helooooo");
+        Log.d("NoteAdapter", "onCreateViewHolder of OtherNoteAdapter: Helooooo");
         View view = LayoutInflater.from(context).inflate(R.layout.note_list, parent, false);
         return new NoteViewHolder(view);
     }
@@ -40,8 +40,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note note = noteList.get(position);
-        Log.d("NoteAdapter", "Note: " + position);
-        Log.d("NoteAdapter", "Note: " + note.getTitle() + " " + note.getContent());
+        Log.d("NoteAdapter", "OtherNote Note: " + position);
+        Log.d("NoteAdapter", "OtherNote NoteTitle: " + note.getTitle() + " and " + note.getContent());
         holder.title.setText(note.getTitle());
         holder.content.setText(note.getContent());
 
@@ -54,7 +54,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     @Override
     public int getItemCount() {
-        Log.d("NoteAdapter", "Inside getItemCount: "+noteList.size());
+        Log.d("NoteAdapter", "Inside OtherNoteAdapter getItemCount: "+noteList.size());
         return noteList.size();
     }
 

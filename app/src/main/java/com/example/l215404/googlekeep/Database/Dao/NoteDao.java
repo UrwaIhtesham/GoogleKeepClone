@@ -29,6 +29,9 @@ public interface NoteDao {
     @Query("SELECT title FROM notes WHERE noteId = :noteID")
     String getTitle(int noteID);
 
+    @Query("SELECT * FROM notes WHERE title = :title AND content = :content")
+    Note getNoteByTitleContent(String title, String content);
+
     @Query("DELETE FROM notes WHERE noteId = :noteId")
     void deleteNoteByID(int noteId);
 
