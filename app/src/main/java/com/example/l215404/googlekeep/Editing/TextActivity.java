@@ -28,6 +28,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.l215404.googlekeep.Database.GoogleKeepDatabase;
 import com.example.l215404.googlekeep.Database.models.Note;
+import com.example.l215404.googlekeep.HomePage.MainActivity;
 import com.example.l215404.googlekeep.R;
 import com.example.l215404.googlekeep.SessionManager.SessionManager;
 
@@ -43,6 +44,7 @@ public class TextActivity extends AppCompatActivity {
     private ImageView pinImageView;
 
     private ImageView saveButton;
+    private ImageView backImageView;
 
     SessionManager sessionManager;
 
@@ -57,6 +59,7 @@ public class TextActivity extends AppCompatActivity {
         listImageView = findViewById(R.id.list);
         saveButton = findViewById(R.id.save);
         pinImageView = findViewById(R.id.pin);
+        backImageView = findViewById(R.id.back);
 
         database = GoogleKeepDatabase.getInstance(this);
 
@@ -71,6 +74,15 @@ public class TextActivity extends AppCompatActivity {
             new FetchNoteTask(noteId).execute();
 
         }
+
+        backImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(TextActivity.this, MainActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         if (sessionManager.isLoggedIn()) {
             int userId = sessionManager.getUserId();
