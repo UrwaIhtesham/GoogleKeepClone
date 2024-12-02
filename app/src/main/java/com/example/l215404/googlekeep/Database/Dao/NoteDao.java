@@ -17,6 +17,9 @@ public interface NoteDao {
     @Query("SELECT * FROM notes")
     List<Note> getAllNotes();
 
+    @Query("SELECT * FROM notes WHERE userId = :userId")
+    List<Note> getAllNotesByUserID(int userId);
+
     @Update
     void update(Note note);
 
@@ -31,6 +34,9 @@ public interface NoteDao {
 
     @Query("SELECT * FROM notes WHERE title = :title AND content = :content")
     Note getNoteByTitleContent(String title, String content);
+
+    @Query("SELECT * FROM notes WHERE title = :title AND content = :content AND userId = :userId")
+    Note getNoteByTitleContentID(String title, String content, int userId);
 
     @Query("DELETE FROM notes WHERE noteId = :noteId")
     void deleteNoteByID(int noteId);

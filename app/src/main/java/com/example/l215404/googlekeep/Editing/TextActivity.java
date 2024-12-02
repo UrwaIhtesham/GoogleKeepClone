@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -41,12 +42,18 @@ public class TextActivity extends AppCompatActivity {
     private GoogleKeepDatabase database;
     private int noteId = -1;
     private ImageView listImageView;
-    private ImageView pinImageView;
+    private ImageView pinImageView, archiveImageView;
 
     private ImageView saveButton;
     private ImageView backImageView;
 
     SessionManager sessionManager;
+
+    private ImageView dotsImageView;
+
+    private LinearLayout dotslayout;
+
+    private int noteIdforSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +67,25 @@ public class TextActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.save);
         pinImageView = findViewById(R.id.pin);
         backImageView = findViewById(R.id.back);
+        archiveImageView = findViewById(R.id.archive);
 
         database = GoogleKeepDatabase.getInstance(this);
 
         sessionManager = new SessionManager(this);
 
+        dotsImageView = findViewById(R.id.dots);
+
+        dotslayout = findViewById(R.id.dotslayout);
+
         Intent intent = getIntent();
+        Log.d("TextActivity", "intent" + intent);
         if (intent != null){
+
             int noteId = intent.getIntExtra("noteId", -1);
+            noteIdforSave = noteId;
             String noteTitle = intent.getStringExtra("noteTitle");
             String noteContent = intent.getStringExtra("noteContent");
-
+            Log.d("TextActivity", "noteId: " +noteId + " noteTitle: " + noteTitle + " noteContent: " + noteContent);
             new FetchNoteTask(noteId).execute();
 
         }
@@ -89,9 +104,40 @@ public class TextActivity extends AppCompatActivity {
             Log.d("TextActivity", "User id: " + userId);
         }
 
-        saveButton.setOnClickListener(v -> saveNote());
+        dotsImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dotslayout.setVisibility(View.VISIBLE);
+                dotslayout.requestFocus();
+            }
+        });
+
+        dotslayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    dotslayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        dotslayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DeleteNoteTask(noteIdforSave).execute();
+            }
+        });
 
         pinImageView.setOnClickListener(v -> togglePinState());
+
+        saveButton.setOnClickListener(v -> saveNote(noteIdforSave));
+
+        archiveImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ArchiveTask(noteIdforSave).execute();
+            }
+        });
     }
 
     private void togglePinState() {
@@ -104,6 +150,39 @@ public class TextActivity extends AppCompatActivity {
         }
 
         new togglePinTask(title, content).execute();
+    }
+
+    private class ArchiveTask extends AsyncTask<Void, Void, Boolean> {
+        private int noteId;
+
+        public ArchiveTask(int noteId) {
+            this.noteId = noteId;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            Note note = database.noteDao().getNoteByID(noteId);
+
+            if (note != null) {
+                note.setArchived(true);
+
+                database.noteDao().update(note);
+
+                return true;
+            }
+
+            return false;
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if (aBoolean) {
+                Toast.makeText(TextActivity.this, "Note archived", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(TextActivity.this, "An error occurred. Try again.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private class togglePinTask extends AsyncTask<Void, Void,Note> {
@@ -140,29 +219,76 @@ public class TextActivity extends AppCompatActivity {
         }
     }
 
-    private void saveNote() {
+    private void saveNote(int noteId) {
         String title = titleEditText.getText().toString();
         String content = Html.toHtml(contentEdittext.getText());
 
         int userId = sessionManager.getUserId();
         Log.d("TextActivity", "saveNote: "+userId);
 
-        new SaveNoteTask(userId, title, content).execute();
+        new SaveNoteTask(noteId, userId, title, content).execute();
+    }
+
+    private class DeleteNoteTask extends AsyncTask<Void, Void, Boolean> {
+        private int noteId;
+
+        public DeleteNoteTask(int noteId) {
+            this.noteId = noteId;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            Note existingnote =null;
+            if (noteId != -1) {
+                existingnote = database.noteDao().getNoteByID(noteId);
+            }
+
+            if (existingnote != null) {
+                existingnote.setDeleted(true);
+                database.noteDao().update(existingnote);
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if (aBoolean) {
+                Toast.makeText(TextActivity.this, "Note Deleted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(TextActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private class SaveNoteTask extends AsyncTask<Void, Void, Void> {
         private String title, content;
-        private int userId;
-        public SaveNoteTask(int userId, String title, String content) {
+        private int userId, noteId;
+        public SaveNoteTask(int noteId, int userId, String title, String content) {
+            this.noteId = noteId;
             this.userId = userId;
             this.title = title;
             this.content = content;
+            Log.d("TextActivity", "noteId: "+ noteId);
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Note note = new Note(userId, title, content);
-            database.noteDao().insertNote(note);
+            Note existingNote = null;
+            if (noteId != -1) {
+                existingNote = database.noteDao().getNoteByID(noteId);
+            }
+
+            if (existingNote != null) {
+                // Update existing note
+                existingNote.setTitle(title);
+                existingNote.setContent(content);
+                database.noteDao().update(existingNote);
+            } else {
+                // Create and save a new note
+                Note newNote = new Note(userId, title, content);
+                database.noteDao().insertNote(newNote);
+            }
             return null;
         }
 

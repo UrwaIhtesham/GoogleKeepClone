@@ -73,9 +73,7 @@
                 android:id="@+id/itemtoggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:thumb="@drawable/custom_switch"
-                android:track="@drawable/custom_switch_track"/>
+                android:checked="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -98,9 +96,7 @@
                 android:id="@+id/movetickedtoggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:thumb="@drawable/custom_switch"
-                android:track="@drawable/custom_switch_track"/>
+                android:checked="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -123,9 +119,7 @@
                 android:id="@+id/displayrichtoggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:thumb="@drawable/custom_switch"
-                android:track="@drawable/custom_switch_track"/>
+                android:checked="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -264,9 +258,7 @@
                 android:id="@+id/enablesharingtoggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:thumb="@drawable/custom_switch"
-                android:track="@drawable/custom_switch_track"/>
+                android:checked="true"/>
         </LinearLayout>
 
 

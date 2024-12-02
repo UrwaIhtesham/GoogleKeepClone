@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Editing.TextActivity"
-    android:background="@color/primary">
+    android:background="@color/primary"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:id="@+id/topbar"
@@ -93,6 +94,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
+        android:paddingBottom="16dp"
         android:paddingStart="10dp"
         android:gravity="start|center_vertical"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -357,6 +359,23 @@
 
         </LinearLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dotslayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@color/primary"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete Note"
+            android:textSize="24sp"
+            android:textColor="@color/white"/>
     </LinearLayout>
 
 

@@ -38,6 +38,8 @@ import androidx.loader.content.AsyncTaskLoader;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.l215404.googlekeep.ArchiveDelete.ArchiveActivity;
+import com.example.l215404.googlekeep.ArchiveDelete.DeletedActivity;
 import com.example.l215404.googlekeep.Authentication.SignUpActivity;
 import com.example.l215404.googlekeep.Database.GoogleKeepDatabase;
 import com.example.l215404.googlekeep.Database.models.User;
@@ -80,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean isAddButtonClicked;
 
     private LinearLayout notesLayout, remindersLayout, archiveLayout, deletedLayout, settingsLayout, helpLayout;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         loadProfileImage();
 
         if (sessionManager.isLoggedIn()) {
-            new FetchNotesTask().execute();
+            new FetchNotesTask(sessionManager.getUserId()).execute();
         }
 
 //        NoteAdapter adapter = new NoteAdapter(note_List, this, "Page2");
@@ -223,6 +224,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, TextActivity.class);
+                i.putExtra("noteId", -1);
+                i.putExtra("noteTitle", "");
+                i.putExtra("noteContent", "");
                 startActivity(i);
                 finish();
             }
@@ -248,6 +252,16 @@ public class MainActivity extends AppCompatActivity {
         deletedLayout = headerView.findViewById(R.id.deletedlayout);
         settingsLayout = headerView.findViewById(R.id.settingslayout);
         helpLayout = headerView.findViewById(R.id.helplayout);
+
+        archiveLayout.setOnClickListener(v -> {
+                    startActivity(new Intent(MainActivity.this, ArchiveActivity.class));
+                    finish();
+                });
+
+        deletedLayout.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, DeletedActivity.class));
+            finish();
+        });
 
         settingsLayout.setOnClickListener(v -> {
             // Handle navigation for Notes
@@ -300,9 +314,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class FetchNotesTask extends AsyncTask<Void, Void, List<Note>> {
+        private int userId;
+
+        public FetchNotesTask(int userId) {
+            this.userId = userId;
+        }
+
         @Override
         protected List<Note> doInBackground(Void... voids) {
-            List<com.example.l215404.googlekeep.Database.models.Note> dbNotes = database.noteDao().getAllNotes();
+            List<com.example.l215404.googlekeep.Database.models.Note> dbNotes = database.noteDao().getAllNotesByUserID(userId);
             Log.d("MainActivity", "Fetched from DB: " + dbNotes.size());
             List<Note> notesFinal = new ArrayList<>();
 
@@ -343,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
             for(Note note: noteList) {
                 if (note.getPinned() == true && note.getArchived() == false && note.getDeleted() == false) {
                     pinnedNotes.add(note);
-                } else if (note.getPinned() == false && note.getPinned() == false && note.getDeleted() == false) {
+                } else if (note.getPinned() == false && note.getArchived() == false && note.getDeleted() == false) {
                     otherNotes.add(note);
                 }
             }
